@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Toko Kita',
+      title: 'Toko Kita - Ime',
       debugShowCheckedModeBanner: false,
       home: ProdukPage(),
       );

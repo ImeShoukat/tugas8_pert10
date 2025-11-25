@@ -31,7 +31,7 @@ class _ProdukDetailState extends State<ProdukDetail> {
     return Scaffold(
       backgroundColor: _spotifyBlack, 
       appBar: AppBar(
-        title: const Text("Detail Produk", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text("Detail Produk - Ime", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: _spotifyBlack,
         iconTheme: const IconThemeData(color: Colors.white), 
         elevation: 0,
@@ -135,7 +135,7 @@ class _ProdukDetailState extends State<ProdukDetail> {
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: const StadiumBorder(),
             ),
-            child: const Text("EDIT", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text("Edit", style: TextStyle(fontWeight: FontWeight.bold)),
             onPressed: () {
               Navigator.push(
                 context,
@@ -158,7 +158,7 @@ class _ProdukDetailState extends State<ProdukDetail> {
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: const StadiumBorder(),
             ),
-            child: const Text("DELETE", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text("Hapus", style: TextStyle(fontWeight: FontWeight.bold)),
             onPressed: () => confirmHapus(),
           ),
         ),

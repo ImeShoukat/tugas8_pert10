@@ -1,16 +1,54 @@
-# tokokita
+# Toko Kita
+```
+Imedia Sholem Shoukat
+H1D023088
+Shift KRS   : Shift C
+Shift Baru  : Shift D
+```
 
-A new Flutter project.
+## Pages
+### 1. Login Page `login_page.dart`
+Halaman autentikasi pengguna.
 
-## Getting Started
+#### Penjelasan Kode
+- Menggunakan `GlobalKey<FormState>` untuk memvalidasi input sebelum memproses login.
+- `TextFormField` dikustomisasi menggunakan `InputDecoration` agar memiliki background abu-abu gelap dan border hijau saat aktif (fokus).
+![Login page](asset/login.png)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+### 2. Registrasi Page `registrasi.dart`
+Halaman untuk pendaftar [pengguna baru]
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+#### Penjelasan Kode
+- Menggunakan logika `if (value != _passwordTextboxController.text)` pada validator konfirmasi password.
+- Menggunakan setState untuk mengubah status tombol menjadi indikator `loading (CircularProgressIndicator)` saat ditekan.
+![Registrasi Page](asset/registrasi.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 3. Produk Page `produk_page.dart`
+Halaman utama (Dashboard) yang menampilkan daftar semua produk.
+
+#### Penjelasan Kode
+- Menggunakan widget `GestureDetector` pada setiap item list untuk mendeteksi ketukan (tap) yang akan mengarahkan user ke halaman Detail Produk.
+
+![list produk](asset/home.png)
+![side bar](asset/home-sidebar.png)
+
+
+### 4. Detail Page `produk_detail.dart`
+Halaman yang menampilkan informasi lengkap dari satu produk yang dipilih.
+
+#### Penjelasan Kode
+- Menerapkan pengecekan `if (widget.produk == null)` untuk mencegah aplikasi crash (layar merah) jika data produk gagal dimuat.
+- Menggunakan `Navigator.pop` berulang untuk menutup dialog dan kembali ke halaman list setelah penghapusan.
+
+![detail page](asset/detail.png)
+![hapus produk page](asset/apus%20produk.png)
+
+### 5. Produk Form `produk_form.dart`
+Halaman formulir yang bersifat reusable (dapat digunakan kembali) untuk dua fungsi: Menambah Produk Baru dan Mengedit Produk Lama.
+
+#### Penjelasan Kode
+- Menggunakan widget `GestureDetector` pada setiap item list untuk mendeteksi ketukan (tap) yang akan mengarahkan user ke halaman Detail Produk.
+
+![form tambah](asset/form%20tambah.png)
+![form ubah](asset/form%20ubah%20prduk.png)

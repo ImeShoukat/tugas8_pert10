@@ -53,7 +53,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       backgroundColor: _spotifyBlack, 
       appBar: AppBar(
         title: const Text(
-          "Create Account",
+          "Buat Akun - Ime",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: _spotifyBlack,

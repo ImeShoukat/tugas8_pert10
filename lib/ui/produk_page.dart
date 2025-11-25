@@ -11,7 +11,6 @@ class ProdukPage extends StatefulWidget {
 }
 
 class _ProdukPageState extends State<ProdukPage> {
-  // Palette Warna Spotify
   final Color _spotifyBlack = const Color(0xFF121212);
   final Color _spotifyDarkGrey = const Color(0xFF282828);
   final Color _spotifyGreen = const Color(0xFF1DB954);
@@ -25,7 +24,7 @@ class _ProdukPageState extends State<ProdukPage> {
         backgroundColor: _spotifyBlack, 
         elevation: 0,
         title: const Text(
-          'List Produk',
+          'List Produk - Ime',
           style: TextStyle(
             color: Colors.white, 
             fontWeight: FontWeight.bold,
@@ -59,7 +58,7 @@ class _ProdukPageState extends State<ProdukPage> {
                    Icon(Icons.account_circle, size: 50, color: _spotifyLightGrey),
                    const SizedBox(height: 10),
                    const Text(
-                     "Admin Toko",
+                     "Ime ayee",
                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                    ),
                 ],

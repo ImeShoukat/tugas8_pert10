@@ -110,7 +110,7 @@ class _ProdukFormState extends State<ProdukForm> {
   // Membuat Textbox Kode Produk
   Widget _kodeProdukTextField() {
     return TextFormField(
-      style: const TextStyle(color: Colors.white), // Teks putih
+      style: const TextStyle(color: Colors.white), 
       decoration: _spotifyDecoration("Kode Produk"),
       cursorColor: _spotifyGreen,
       keyboardType: TextInputType.text,
