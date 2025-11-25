@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tokokita/model/produk.dart';
 
-// ignore: must_be_immutable
 class ProdukForm extends StatefulWidget {
   Produk? produk;
   ProdukForm({Key? key, this.produk}) : super(key: key);
@@ -20,7 +19,6 @@ class _ProdukFormState extends State<ProdukForm> {
   final _namaProdukTextboxController = TextEditingController();
   final _hargaProdukTextboxController = TextEditingController();
 
-  // Warna Khas Spotify
   final Color _spotifyBlack = const Color(0xFF121212);
   final Color _spotifyDarkGrey = const Color(0xFF282828);
   final Color _spotifyGreen = const Color(0xFF1DB954);
@@ -48,20 +46,19 @@ class _ProdukFormState extends State<ProdukForm> {
     }
   }
 
-  // Helper untuk styling Input Field ala Spotify
   InputDecoration _spotifyDecoration(String label) {
     return InputDecoration(
       labelText: label,
       labelStyle: TextStyle(color: _spotifyTextGrey),
       filled: true,
-      fillColor: _spotifyDarkGrey, // Background input abu-abu
+      fillColor: _spotifyDarkGrey, 
       contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide.none,
         borderRadius: BorderRadius.circular(8),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _spotifyGreen, width: 2), // Hijau saat aktif
+        borderSide: BorderSide(color: _spotifyGreen, width: 2), 
         borderRadius: BorderRadius.circular(8),
       ),
       errorBorder: OutlineInputBorder(
@@ -78,7 +75,7 @@ class _ProdukFormState extends State<ProdukForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _spotifyBlack, // Background Hitam
+      backgroundColor: _spotifyBlack, 
       appBar: AppBar(
         backgroundColor: _spotifyBlack,
         title: Text(
@@ -161,16 +158,15 @@ class _ProdukFormState extends State<ProdukForm> {
     );
   }
 
-  // Membuat Tombol Simpan/Ubah
   Widget _buttonSubmit() {
     return SizedBox(
-      width: double.infinity, // Tombol selebar layar
+      width: double.infinity, 
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: _spotifyGreen, // Warna Hijau Spotify
-          foregroundColor: Colors.black, // Teks Hitam (Kontras)
+          backgroundColor: _spotifyGreen, 
+          foregroundColor: Colors.black, 
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: const StadiumBorder(), // Bentuk kapsul
+          shape: const StadiumBorder(), 
         ),
         child: _isLoading
             ? const SizedBox(
@@ -185,16 +181,14 @@ class _ProdukFormState extends State<ProdukForm> {
         onPressed: () {
           var validate = _formKey.currentState!.validate();
           if (validate && !_isLoading) {
-            // Logika Simpan (Simulasi)
             setState(() {
               _isLoading = true;
             });
 
-            // Simulasi delay jaringan 2 detik
             Future.delayed(const Duration(seconds: 2), () {
-              if (!mounted) return; // Cek widget masih aktif
+              if (!mounted) return; 
               
-              Navigator.pop(context); // Kembali ke halaman sebelumnya
+              Navigator.pop(context); 
               
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

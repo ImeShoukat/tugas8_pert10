@@ -123,32 +123,30 @@ class _LoginPageState extends State<LoginPage> {
   // Membuat Tombol Login
   Widget _buttonLogin() {
     return SizedBox(
-      width: double.infinity, // Lebar full
+      width: double.infinity, 
       child: ElevatedButton(
         child: const Text(
-          "LOG IN",
+          "Login - Ime",
           style: TextStyle(
-            color: Colors.black, // Teks tombol hitam agar kontras dengan hijau
+            color: Colors.black, 
             fontWeight: FontWeight.bold,
             letterSpacing: 1.5,
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: _spotifyGreen, // Warna Hijau Spotify
+          backgroundColor: _spotifyGreen, 
           padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: const StadiumBorder(), // Bentuk kapsul (Rounded)
+          shape: const StadiumBorder(), 
         ),
         onPressed: () {
           var validate = _formKey.currentState!.validate();
           if (validate) {
-            // Logika login nanti di sini
           }
         },
       ),
     );
   }
 
-  // Membuat menu untuk membuka halaman registrasi
   Widget _menuRegistrasi() {
     return Center(
       child: Column(
@@ -168,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               "SIGN UP FOR TOKOKITA",
               style: TextStyle(
-                color: Colors.white, // Teks putih terang
+                color: Colors.white, 
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1.0,
               ),

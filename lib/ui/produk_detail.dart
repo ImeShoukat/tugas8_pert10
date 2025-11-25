@@ -3,7 +3,7 @@ import 'package:tokokita/model/produk.dart';
 import 'package:tokokita/ui/produk_form.dart';
 
 class ProdukDetail extends StatefulWidget {
-  final Produk? produk; // Gunakan final
+  final Produk? produk; 
 
   const ProdukDetail({Key? key, this.produk}) : super(key: key);
 
@@ -20,7 +20,6 @@ class _ProdukDetailState extends State<ProdukDetail> {
 
   @override
   Widget build(BuildContext context) {
-    // Pencegahan error jika data null
     if (widget.produk == null) {
       return Scaffold(
         backgroundColor: _spotifyBlack,
@@ -30,11 +29,11 @@ class _ProdukDetailState extends State<ProdukDetail> {
     }
 
     return Scaffold(
-      backgroundColor: _spotifyBlack, // Background Hitam
+      backgroundColor: _spotifyBlack, 
       appBar: AppBar(
         title: const Text("Detail Produk", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        backgroundColor: _spotifyBlack, // AppBar transparan/hitam
-        iconTheme: const IconThemeData(color: Colors.white), // Panah back putih
+        backgroundColor: _spotifyBlack,
+        iconTheme: const IconThemeData(color: Colors.white), 
         elevation: 0,
         centerTitle: true,
       ),
@@ -42,13 +41,13 @@ class _ProdukDetailState extends State<ProdukDetail> {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center, // Tengah secara horizontal
+            crossAxisAlignment: CrossAxisAlignment.center, 
             children: [
-              _buildCoverArt(), // Visualisasi Produk ala Album Art
+              _buildCoverArt(), 
               const SizedBox(height: 30),
-              _buildProductInfo(), // Judul, Harga, Kode
+              _buildProductInfo(), 
               const SizedBox(height: 40),
-              _tombolHapusEdit() // Tombol Aksi
+              _tombolHapusEdit() 
             ],
           ),
         ),
@@ -56,7 +55,6 @@ class _ProdukDetailState extends State<ProdukDetail> {
     );
   }
 
-  // Widget Visualisasi Produk (Kotak Gradasi)
   Widget _buildCoverArt() {
     return Container(
       height: 250,
@@ -74,7 +72,7 @@ class _ProdukDetailState extends State<ProdukDetail> {
             offset: const Offset(0, 10),
           ),
         ],
-        borderRadius: BorderRadius.circular(12), // Sedikit rounded
+        borderRadius: BorderRadius.circular(12), 
       ),
       child: Icon(
         Icons.inventory_2_outlined, // Ikon Produk
@@ -84,11 +82,9 @@ class _ProdukDetailState extends State<ProdukDetail> {
     );
   }
 
-  // Widget Informasi Teks
   Widget _buildProductInfo() {
     return Column(
       children: [
-        // Nama Produk (Judul Lagu)
         Text(
           widget.produk!.namaProduk!,
           textAlign: TextAlign.center,
@@ -99,7 +95,6 @@ class _ProdukDetailState extends State<ProdukDetail> {
           ),
         ),
         const SizedBox(height: 8),
-        // Harga Produk (Artis - Warna Hijau)
         Text(
           "Rp. ${widget.produk!.hargaProduk.toString()}",
           style: TextStyle(
@@ -109,7 +104,6 @@ class _ProdukDetailState extends State<ProdukDetail> {
           ),
         ),
         const SizedBox(height: 8),
-        // Kode Produk (Info Tambahan - Abu-abu)
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
@@ -133,12 +127,11 @@ class _ProdukDetailState extends State<ProdukDetail> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Tombol Edit (Primary - Hijau)
         Expanded(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: _spotifyGreen,
-              foregroundColor: Colors.black, // Teks Hitam
+              foregroundColor: Colors.black, 
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: const StadiumBorder(),
             ),
@@ -155,14 +148,13 @@ class _ProdukDetailState extends State<ProdukDetail> {
             },
           ),
         ),
-        const SizedBox(width: 16), // Jarak antar tombol
-        
-        // Tombol Delete (Secondary - Outline Merah/Putih)
+        const SizedBox(width: 16),
+
         Expanded(
           child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.redAccent, // Teks Merah
-              side: const BorderSide(color: Colors.redAccent), // Border Merah
+              foregroundColor: Colors.redAccent, 
+              side: const BorderSide(color: Colors.redAccent), 
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: const StadiumBorder(),
             ),
@@ -175,36 +167,34 @@ class _ProdukDetailState extends State<ProdukDetail> {
   }
 
   void confirmHapus() {
-    // Dialog Tema Gelap
     AlertDialog alertDialog = AlertDialog(
-      backgroundColor: _spotifyDarkGrey, // Background dialog abu-abu gelap
+      backgroundColor: _spotifyDarkGrey, 
       title: const Text("Hapus Produk?", style: TextStyle(color: Colors.white)),
       content: Text(
         "Yakin ingin menghapus '${widget.produk!.namaProduk}'? Tindakan ini tidak dapat dibatalkan.",
         style: TextStyle(color: _spotifyTextGrey),
       ),
       actions: [
-        // Tombol Batal
+        
         TextButton(
           child: const Text("Batal", style: TextStyle(color: Colors.white)),
           onPressed: () => Navigator.pop(context),
         ),
-        // Tombol Ya (Hapus)
+        
         TextButton(
           child: const Text("Hapus", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
           onPressed: () {
-            Navigator.pop(context); // Tutup dialog
+            Navigator.pop(context); 
             
-            // Tampilkan notifikasi
             ScaffoldMessenger.of(context).showSnackBar(
                SnackBar(
                 content: const Text("Data berhasil dihapus (Simulasi)"),
-                backgroundColor: _spotifyGreen, // Snackbar hijau
+                backgroundColor: _spotifyGreen,
                 behavior: SnackBarBehavior.floating,
               ),
             );
             
-            Navigator.pop(context); // Kembali ke list
+            Navigator.pop(context); 
           },
         ),
       ],

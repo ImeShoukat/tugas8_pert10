@@ -20,9 +20,9 @@ class _ProdukPageState extends State<ProdukPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _spotifyBlack, // Background Hitam Pekat
+      backgroundColor: _spotifyBlack, 
       appBar: AppBar(
-        backgroundColor: _spotifyBlack, // AppBar Hitam
+        backgroundColor: _spotifyBlack, 
         elevation: 0,
         title: const Text(
           'List Produk',
@@ -32,12 +32,12 @@ class _ProdukPageState extends State<ProdukPage> {
             fontSize: 24
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.white), // Icon hamburger putih
+        iconTheme: const IconThemeData(color: Colors.white), 
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              child: Icon(Icons.add_circle_outline, size: 30.0, color: _spotifyGreen), // Icon tambah hijau
+              child: Icon(Icons.add_circle_outline, size: 30.0, color: _spotifyGreen), 
               onTap: () async {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ProdukForm()));
@@ -46,7 +46,6 @@ class _ProdukPageState extends State<ProdukPage> {
           )
         ],
       ),
-      // Drawer dengan tema gelap
       drawer: Drawer(
         backgroundColor: _spotifyBlack,
         child: ListView(
@@ -70,7 +69,6 @@ class _ProdukPageState extends State<ProdukPage> {
               leading: Icon(Icons.logout, color: _spotifyLightGrey),
               title: const Text('Logout', style: TextStyle(color: Colors.white)),
               onTap: () async {
-                // Logika logout
               },
             )
           ],
@@ -120,7 +118,6 @@ class ItemProduk extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Warna lokal untuk komponen item
     final Color _cardColor = const Color(0xFF282828);
     final Color _greenColor = const Color(0xFF1DB954);
     final Color _textColor = const Color(0xFFFFFFFF);
@@ -136,14 +133,14 @@ class ItemProduk extends StatelessWidget {
                     )));
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12), // Jarak antar item
+        margin: const EdgeInsets.only(bottom: 12), 
         decoration: BoxDecoration(
-          color: _cardColor, // Warna abu-abu gelap
-          borderRadius: BorderRadius.circular(8), // Rounded corner kecil
+          color: _cardColor, 
+          borderRadius: BorderRadius.circular(8), 
         ),
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          // Leading icon sebagai pengganti "Album Art"
+         
           leading: Container(
             width: 50,
             height: 50,
@@ -171,12 +168,12 @@ class ItemProduk extends StatelessWidget {
             child: Text(
               "Rp. ${produk.hargaProduk.toString()}",
               style: TextStyle(
-                color: _greenColor, // Harga warna hijau neon
+                color: _greenColor, 
                 fontWeight: FontWeight.w500
               ),
             ),
           ),
-          trailing: Icon(Icons.more_vert, color: _subTextColor), // Titik tiga khas Spotify
+          trailing: Icon(Icons.more_vert, color: _subTextColor), 
         ),
       ),
     );

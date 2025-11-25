@@ -30,7 +30,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(30), // Rounded banget
+        borderRadius: BorderRadius.circular(30),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: _spotifyGreen, width: 2),
@@ -50,14 +50,14 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _spotifyBlack, // Background Hitam
+      backgroundColor: _spotifyBlack, 
       appBar: AppBar(
         title: const Text(
           "Create Account",
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: _spotifyBlack,
-        iconTheme: const IconThemeData(color: Colors.white), // Panah back putih
+        iconTheme: const IconThemeData(color: Colors.white), 
         elevation: 0,
         centerTitle: true,
       ),
@@ -95,7 +95,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already have an account? ", style: TextStyle(color: _spotifyTextGrey)),
+                    Text("Udah punya Akun? ", style: TextStyle(color: _spotifyTextGrey)),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: const Text("Log in", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -172,8 +172,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       cursorColor: _spotifyGreen,
       keyboardType: TextInputType.text,
       obscureText: true,
-      // Penting: Gunakan controller tambahan ini untuk validasi perbandingan
-      // (Di kode asli Anda belum didefinisikan controllernya)
       controller: _passwordKonfirmasiTextboxController, 
       validator: (value) {
         if (value != _passwordTextboxController.text) {
@@ -201,7 +199,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
           : const Text(
               "SIGN UP",
               style: TextStyle(
-                color: Colors.black, // Teks Hitam Kontras
+                color: Colors.black, 
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 letterSpacing: 1.2
@@ -214,14 +212,12 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
               _isLoading = true;
             });
 
-            // Simulasi Loading 2 Detik
             Future.delayed(const Duration(seconds: 2), () {
               if (!mounted) return;
               setState(() {
                 _isLoading = false;
               });
-              
-              // Tampilkan pesan sukses dan kembali ke login
+            
               ScaffoldMessenger.of(context).showSnackBar(
                  SnackBar(
                   content: const Text("Registrasi Berhasil! Silakan Login."),
@@ -229,7 +225,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   behavior: SnackBarBehavior.floating,
                 ),
               );
-              Navigator.pop(context); // Kembali ke halaman Login
+              Navigator.pop(context); 
             });
           }
         },
