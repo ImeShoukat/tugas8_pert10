@@ -33,16 +33,16 @@ class _ProdukFormState extends State<ProdukForm> {
   isUpdate() {
     if (widget.produk != null) {
       setState(() {
-        judul = "UBAH PRODUK";
-        tombolSubmit = "UBAH";
+        judul = "Ubah Produk - Ime";
+        tombolSubmit = "Ubah";
         _kodeProdukTextboxController.text = widget.produk!.kodeProduk!;
         _namaProdukTextboxController.text = widget.produk!.namaProduk!;
         _hargaProdukTextboxController.text =
             widget.produk!.hargaProduk.toString();
       });
     } else {
-      judul = "TAMBAH PRODUK";
-      tombolSubmit = "SIMPAN";
+      judul = "Tambah Produk - Ime";
+      tombolSubmit = "Simpan";
     }
   }
 
@@ -93,7 +93,7 @@ class _ProdukFormState extends State<ProdukForm> {
             child: Column(
               children: [
                 _kodeProdukTextField(),
-                const SizedBox(height: 16), // Jarak antar elemen
+                const SizedBox(height: 16), 
                 _namaProdukTextField(),
                 const SizedBox(height: 16),
                 _hargaProdukTextField(),
