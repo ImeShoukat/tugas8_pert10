@@ -25,7 +25,7 @@ class _ProdukPageState extends State<ProdukPage> {
       
       appBar: AppBar(
         title: const Text(
-          'List Produk',
+          'List Produk | Ime',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
@@ -182,7 +182,7 @@ class ItemProduk extends StatelessWidget {
             child: Text(
               "Rp ${produk.hargaProduk.toString()}", 
               style: const TextStyle(
-                color: Color(0xFF1DB954), // Hijau Spotify
+                color: Color(0xFF1DB954), 
                 fontWeight: FontWeight.w600,
               ),
             ),

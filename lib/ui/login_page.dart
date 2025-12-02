@@ -22,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // --- WARNA BACKGROUND (HITAM PEKAT) ---
       backgroundColor: const Color(0xFF121212), 
       body: Center(
         child: SingleChildScrollView(
@@ -34,32 +33,27 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // --- JUDUL HALAMAN ---
                   const Text(
-                    "Log in",
+                    "Login | Ime",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white, // Teks Putih
+                      color: Colors.white, 
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -1.0,
                     ),
                   ),
                   const SizedBox(height: 40),
-                  
-                  // --- INPUT EMAIL ---
+                 
                   _emailTextField(),
                   const SizedBox(height: 16),
                   
-                  // --- INPUT PASSWORD ---
                   _passwordTextField(),
                   const SizedBox(height: 32),
                   
-                  // --- TOMBOL LOGIN (HIJAU) ---
                   _buttonLogin(),
                   const SizedBox(height: 24),
                   
-                  // --- LINK REGISTRASI ---
                   _menuRegistrasi(),
                 ],
               ),
@@ -72,19 +66,17 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _emailTextField() {
     return TextFormField(
-      style: const TextStyle(color: Colors.white), // Ketikan teks warna putih
+      style: const TextStyle(color: Colors.white), 
       decoration: InputDecoration(
         labelText: "Email",
         labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
-        // Warna isian textbox (Abu Gelap)
         fillColor: const Color(0xFF282828), 
         contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
         ),
-        // Border saat diklik (Hijau)
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0),
@@ -103,19 +95,17 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _passwordTextField() {
     return TextFormField(
-      style: const TextStyle(color: Colors.white), // Ketikan teks warna putih
+      style: const TextStyle(color: Colors.white), 
       decoration: InputDecoration(
         labelText: "Password",
         labelStyle: const TextStyle(color: Colors.grey),
         filled: true,
-        // Warna isian textbox (Abu Gelap)
         fillColor: const Color(0xFF282828), 
         contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
         ),
-        // Border saat diklik (Hijau)
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0),
@@ -138,19 +128,17 @@ class _LoginPageState extends State<LoginPage> {
       height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          // --- WARNA TOMBOL (HIJAU SPOTIFY) ---
-          backgroundColor: const Color(0xFF1DB954), 
-          // Jika Flutter versi lama error di 'backgroundColor', ganti jadi 'primary'
           
+          backgroundColor: const Color(0xFF1DB954), 
           shape: const StadiumBorder(),
           elevation: 0,
         ),
         child: _isLoading 
           ? const CircularProgressIndicator(color: Colors.white)
           : const Text(
-              "LOG IN",
+              "Login",
               style: TextStyle(
-                color: Colors.black, // Teks Hitam
+                color: Colors.black, 
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
                 letterSpacing: 1.5,
@@ -227,13 +215,13 @@ class _LoginPageState extends State<LoginPage> {
         },
         child: RichText(
           text: const TextSpan(
-            text: "Don't have an account? ",
+            text: "Belum Punya Akun? ",
             style: TextStyle(color: Colors.grey),
             children: [
               TextSpan(
-                text: "Sign up",
+                text: "Registrasi | Ime",
                 style: TextStyle(
-                  color: Colors.white, // Teks Link Putih
+                  color: Colors.white, 
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
                 ),

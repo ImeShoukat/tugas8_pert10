@@ -18,10 +18,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   final _namaTextboxController = TextEditingController();
   final _emailTextboxController = TextEditingController();
   final _passwordTextboxController = TextEditingController();
-  // Controller untuk konfirmasi password tidak perlu disimpan di state global jika hanya validasi,
-  // tapi untuk konsistensi pembersihan memori, boleh kita buatkan controller juga kalau mau.
-  // Di sini saya pakai logic validator langsung akses controller password utama.
-
+ 
   @override
   void dispose() {
     _namaTextboxController.dispose();
@@ -33,15 +30,12 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // --- WARNA BACKGROUND (HITAM) ---
       backgroundColor: const Color(0xFF121212),
-      
-      // AppBar Transparan biar Back Button warna putih kelihatan elegan
       appBar: AppBar(
-        title: const Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text("Registrasi | Ime", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white), // Panah Back warna putih
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
       
       body: Center(
@@ -55,7 +49,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text(
-                    "Create account",
+                    "Buat Akun Baru",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -66,7 +60,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   ),
                   const SizedBox(height: 40),
 
-                  // --- FORM INPUT ---
                   _namaTextField(),
                   const SizedBox(height: 16),
                   _emailTextField(),
@@ -77,7 +70,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   
                   const SizedBox(height: 40),
                   
-                  // --- TOMBOL REGISTRASI ---
                   _buttonRegistrasi(),
                 ],
               ),
@@ -88,13 +80,12 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
     );
   }
 
-  // --- STYLE INPUT SERAGAM (DARK MODE) ---
   InputDecoration _customInputDecoration(String label) {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(color: Colors.grey),
       filled: true,
-      fillColor: const Color(0xFF282828), // Abu gelap
+      fillColor: const Color(0xFF282828),
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
@@ -102,7 +93,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0), // Hijau Spotify
+        borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0), 
       ),
       errorStyle: const TextStyle(color: Colors.redAccent),
     );
@@ -179,16 +170,16 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1DB954), // Hijau Spotify
+          backgroundColor: const Color(0xFF1DB954), 
           shape: const StadiumBorder(),
           elevation: 0,
         ),
         child: _isLoading
             ? const CircularProgressIndicator(color: Colors.white)
             : const Text(
-                "SIGN UP",
+                "Registrasi",
                 style: TextStyle(
-                  color: Colors.black, // Teks Hitam Kontras
+                  color: Colors.black, // Teks Hitam Kontr
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   letterSpacing: 1.5,
@@ -216,20 +207,19 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       password: _passwordTextboxController.text,
     ).then(
       (value) {
-        if (value.code == 200 || value.status == true) { // Cek status sukses
+        if (value.code == 200 || value.status == true) { 
           showDialog(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) => SuccessDialog(
               description: "Registrasi berhasil, silahkan login",
               okClick: () {
-                Navigator.pop(context); // Tutup dialog
-                Navigator.pop(context); // Kembali ke halaman Login
+                Navigator.pop(context); 
+                Navigator.pop(context); 
               },
             ),
           );
         } else {
-            // Tangkap error dari API (misal email duplikat)
             showDialog(
             context: context,
             barrierDismissible: false,
@@ -249,7 +239,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
         );
       },
     ).whenComplete(() {
-      // Matikan loading SETELAH proses selesai
       if (mounted) {
         setState(() {
           _isLoading = false;

@@ -16,7 +16,6 @@ class ProdukDetail extends StatefulWidget {
 }
 
 class _ProdukDetailState extends State<ProdukDetail> {
-  // Warna Tema
   final Color _spotifyGreen = const Color(0xFF1DB954);
   final Color _darkBackground = const Color(0xFF121212);
   final Color _cardColor = const Color(0xFF282828);
@@ -26,7 +25,7 @@ class _ProdukDetailState extends State<ProdukDetail> {
     return Scaffold(
       backgroundColor: _darkBackground,
       appBar: AppBar(
-        title: const Text("Detail Produk", style: TextStyle(color: Colors.white)),
+        title: const Text("Detail Produk | Ime", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -38,11 +37,9 @@ class _ProdukDetailState extends State<ProdukDetail> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // --- 1. ICON PRODUK (Ala Cover Album) ---
                 _produkIcon(),
                 const SizedBox(height: 32),
 
-                // --- 2. INFORMASI PRODUK ---
                 Text(
                   widget.produk!.namaProduk ?? "Nama Produk",
                   textAlign: TextAlign.center,
@@ -63,17 +60,15 @@ class _ProdukDetailState extends State<ProdukDetail> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  "Rp ${widget.produk!.hargaProduk.toString()}", // Pastikan di Model namanya hargaProduk atau harga
+                  "Rp ${widget.produk!.hargaProduk.toString()}", 
                   style: TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
-                    color: _spotifyGreen, // Warna Hijau Nyala
+                    color: _spotifyGreen, 
                   ),
                 ),
 
                 const SizedBox(height: 50),
-
-                // --- 3. TOMBOL AKSI ---
                 _tombolHapusEdit(),
               ],
             ),
@@ -88,8 +83,8 @@ class _ProdukDetailState extends State<ProdukDetail> {
       height: 180,
       width: 180,
       decoration: BoxDecoration(
-        color: _cardColor, // Kotak abu gelap
-        borderRadius: BorderRadius.circular(20), // Sudut tumpul
+        color: _cardColor, 
+        borderRadius: BorderRadius.circular(20), 
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
@@ -99,7 +94,7 @@ class _ProdukDetailState extends State<ProdukDetail> {
         ],
       ),
       child: Icon(
-        Icons.inventory_2_outlined, // Ikon barang
+        Icons.inventory_2_outlined, 
         size: 80,
         color: _spotifyGreen,
       ),
@@ -109,7 +104,6 @@ class _ProdukDetailState extends State<ProdukDetail> {
   Widget _tombolHapusEdit() {
     return Column(
       children: [
-        // Tombol Edit (Hijau Lebar)
         SizedBox(
           width: double.infinity,
           height: 55,
@@ -138,7 +132,6 @@ class _ProdukDetailState extends State<ProdukDetail> {
         ),
         const SizedBox(height: 16),
         
-        // Tombol Hapus (Merah/Outline Lebar)
         SizedBox(
           width: double.infinity,
           height: 55,

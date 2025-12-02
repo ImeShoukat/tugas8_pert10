@@ -18,14 +18,13 @@ class _ProdukFormState extends State<ProdukForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   
-  String judul = "TAMBAH PRODUK";
-  String tombolSubmit = "SIMPAN";
+  String judul = "Tambah Produk | Ime";
+  String tombolSubmit = "Simpan";
 
   final _kodeProdukTextboxController = TextEditingController();
   final _namaProdukTextboxController = TextEditingController();
   final _hargaProdukTextboxController = TextEditingController();
 
-  // Warna Dark Mode (Spotify Style)
   final Color _spotifyGreen = const Color(0xFF1DB954);
   final Color _darkBackground = const Color(0xFF121212);
   final Color _inputFillColor = const Color(0xFF282828);
@@ -39,8 +38,8 @@ class _ProdukFormState extends State<ProdukForm> {
   void isUpdate() {
     if (widget.produk != null) {
       setState(() {
-        judul = "UBAH PRODUK";
-        tombolSubmit = "UPDATE";
+        judul = "Ubah Produk | Ime";
+        tombolSubmit = "Update";
         _kodeProdukTextboxController.text = widget.produk!.kodeProduk ?? '';
         _namaProdukTextboxController.text = widget.produk!.namaProduk ?? '';
         _hargaProdukTextboxController.text = widget.produk!.hargaProduk != null 
@@ -48,8 +47,8 @@ class _ProdukFormState extends State<ProdukForm> {
             : '';
       });
     } else {
-      judul = "TAMBAH PRODUK";
-      tombolSubmit = "SIMPAN";
+      judul = "Tambah Produk | Ime";
+      tombolSubmit = "Simpan";
     }
   }
 
@@ -113,7 +112,6 @@ class _ProdukFormState extends State<ProdukForm> {
       keyboardType: TextInputType.text,
       controller: _kodeProdukTextboxController,
       validator: (value) {
-        // PERBAIKAN PENTING: Cek null dulu biar gak error TypeError di Web
         if (value == null || value.trim().isEmpty) {
           return 'Kode Produk harus diisi';
         }
@@ -145,7 +143,6 @@ class _ProdukFormState extends State<ProdukForm> {
       keyboardType: TextInputType.number,
       controller: _hargaProdukTextboxController,
       validator: (value) {
-        // PERBAIKAN PENTING
         if (value == null || value.trim().isEmpty) {
           return 'Harga harus diisi';
         }
