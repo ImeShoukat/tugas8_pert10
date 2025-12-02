@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tokokita/bloc/registrasi_bloc.dart';
+import 'package:tokokita/widget/success_dialog.dart';
+import 'package:tokokita/widget/warning_dialog.dart';
 
 class RegistrasiPage extends StatefulWidget {
-  const RegistrasiPage({Key? key}) : super(key: key);
+  const RegistrasiPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _RegistrasiPageState createState() => _RegistrasiPageState();
 }
 
@@ -13,96 +18,69 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   final _namaTextboxController = TextEditingController();
   final _emailTextboxController = TextEditingController();
   final _passwordTextboxController = TextEditingController();
-  final _passwordKonfirmasiTextboxController = TextEditingController(); 
+  // Controller untuk konfirmasi password tidak perlu disimpan di state global jika hanya validasi,
+  // tapi untuk konsistensi pembersihan memori, boleh kita buatkan controller juga kalau mau.
+  // Di sini saya pakai logic validator langsung akses controller password utama.
 
-  final Color _spotifyBlack = const Color(0xFF121212);
-  final Color _spotifyDarkGrey = const Color(0xFF282828);
-  final Color _spotifyGreen = const Color(0xFF1DB954);
-  final Color _spotifyTextGrey = const Color(0xFFB3B3B3);
-
-  InputDecoration _spotifyDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: TextStyle(color: _spotifyTextGrey),
-      filled: true,
-      fillColor: _spotifyDarkGrey, 
-      
-      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(30),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _spotifyGreen, width: 2),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.redAccent),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.redAccent),
-        borderRadius: BorderRadius.circular(30),
-      ),
-    );
+  @override
+  void dispose() {
+    _namaTextboxController.dispose();
+    _emailTextboxController.dispose();
+    _passwordTextboxController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _spotifyBlack, 
+      // --- WARNA BACKGROUND (HITAM) ---
+      backgroundColor: const Color(0xFF121212),
+      
+      // AppBar Transparan biar Back Button warna putih kelihatan elegan
       appBar: AppBar(
-        title: const Text(
-          "Buat Akun - Ime",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        backgroundColor: _spotifyBlack,
-        iconTheme: const IconThemeData(color: Colors.white), 
+        title: const Text("Sign Up", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white), // Panah Back warna putih
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10),
-                const Text(
-                  "Sign up for free to start listening.",
-                  style: TextStyle(
+      
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text(
+                    "Create account",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 40),
-                
-                _namaTextField(),
-                const SizedBox(height: 16),
-                _emailTextField(),
-                const SizedBox(height: 16),
-                _passwordTextField(),
-                const SizedBox(height: 16),
-                _passwordKonfirmasiTextField(),
-                const SizedBox(height: 40),
-                _buttonRegistrasi(),
-                
-                const SizedBox(height: 30),
-                // Text login option
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Udah punya Akun? ", style: TextStyle(color: _spotifyTextGrey)),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: const Text("Log in", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                    )
-                  ],
-                )
-              ],
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // --- FORM INPUT ---
+                  _namaTextField(),
+                  const SizedBox(height: 16),
+                  _emailTextField(),
+                  const SizedBox(height: 16),
+                  _passwordTextField(),
+                  const SizedBox(height: 16),
+                  _passwordKonfirmasiTextField(),
+                  
+                  const SizedBox(height: 40),
+                  
+                  // --- TOMBOL REGISTRASI ---
+                  _buttonRegistrasi(),
+                ],
+              ),
             ),
           ),
         ),
@@ -110,16 +88,35 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
     );
   }
 
+  // --- STYLE INPUT SERAGAM (DARK MODE) ---
+  InputDecoration _customInputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.grey),
+      filled: true,
+      fillColor: const Color(0xFF282828), // Abu gelap
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0), // Hijau Spotify
+      ),
+      errorStyle: const TextStyle(color: Colors.redAccent),
+    );
+  }
+
   Widget _namaTextField() {
     return TextFormField(
       style: const TextStyle(color: Colors.white),
-      decoration: _spotifyDecoration("Nama Lengkap"),
-      cursorColor: _spotifyGreen,
+      decoration: _customInputDecoration('Nama'),
       keyboardType: TextInputType.text,
       controller: _namaTextboxController,
       validator: (value) {
-        if (value!.length < 3) {
-          return "Nama harus diisi minimal 3 karakter";
+        if (value == null || value.trim().length < 3) {
+          return 'Nama harus diisi minimal 3 karakter';
         }
         return null;
       },
@@ -129,19 +126,17 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   Widget _emailTextField() {
     return TextFormField(
       style: const TextStyle(color: Colors.white),
-      decoration: _spotifyDecoration("Email"),
-      cursorColor: _spotifyGreen,
+      decoration: _customInputDecoration('Email'),
       keyboardType: TextInputType.emailAddress,
       controller: _emailTextboxController,
       validator: (value) {
-        if (value!.isEmpty) {
+        if (value == null || value.trim().isEmpty) {
           return 'Email harus diisi';
         }
-        Pattern pattern =
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-        RegExp regex = RegExp(pattern.toString());
-        if (!regex.hasMatch(value)) {
-          return "Email tidak valid";
+        final email = value.trim();
+        final regex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
+        if (!regex.hasMatch(email)) {
+          return 'Email tidak valid';
         }
         return null;
       },
@@ -151,14 +146,13 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   Widget _passwordTextField() {
     return TextFormField(
       style: const TextStyle(color: Colors.white),
-      decoration: _spotifyDecoration("Password"),
-      cursorColor: _spotifyGreen,
+      decoration: _customInputDecoration('Password'),
       keyboardType: TextInputType.text,
       obscureText: true,
       controller: _passwordTextboxController,
       validator: (value) {
-        if (value!.length < 6) {
-          return "Password harus diisi minimal 6 karakter";
+        if (value == null || value.length < 6) {
+          return 'Password harus diisi minimal 6 karakter';
         }
         return null;
       },
@@ -168,14 +162,12 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   Widget _passwordKonfirmasiTextField() {
     return TextFormField(
       style: const TextStyle(color: Colors.white),
-      decoration: _spotifyDecoration("Konfirmasi Password"),
-      cursorColor: _spotifyGreen,
+      decoration: _customInputDecoration('Konfirmasi Password'),
       keyboardType: TextInputType.text,
       obscureText: true,
-      controller: _passwordKonfirmasiTextboxController, 
       validator: (value) {
-        if (value != _passwordTextboxController.text) {
-          return "Konfirmasi Password tidak sama";
+        if (value == null || value != _passwordTextboxController.text) {
+          return 'Konfirmasi Password tidak sama';
         }
         return null;
       },
@@ -184,52 +176,85 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
 
   Widget _buttonRegistrasi() {
     return SizedBox(
-      width: double.infinity,
+      height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: _spotifyGreen,
-          padding: const EdgeInsets.symmetric(vertical: 18),
+          backgroundColor: const Color(0xFF1DB954), // Hijau Spotify
           shape: const StadiumBorder(),
+          elevation: 0,
         ),
-        child: _isLoading 
-          ? const SizedBox(
-              height: 20, width: 20, 
-              child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2)
-            )
-          : const Text(
-              "SIGN UP",
-              style: TextStyle(
-                color: Colors.black, 
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                letterSpacing: 1.2
+        child: _isLoading
+            ? const CircularProgressIndicator(color: Colors.white)
+            : const Text(
+                "SIGN UP",
+                style: TextStyle(
+                  color: Colors.black, // Teks Hitam Kontras
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  letterSpacing: 1.5,
+                ),
               ),
-            ),
         onPressed: () {
           var validate = _formKey.currentState!.validate();
-          if (validate && !_isLoading) {
-            setState(() {
-              _isLoading = true;
-            });
-
-            Future.delayed(const Duration(seconds: 2), () {
-              if (!mounted) return;
-              setState(() {
-                _isLoading = false;
-              });
-            
-              ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(
-                  content: const Text("Registrasi Berhasil! Silakan Login."),
-                  backgroundColor: _spotifyGreen,
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-              Navigator.pop(context); 
-            });
+          if (validate) {
+            if (!_isLoading) _submit();
           }
         },
       ),
     );
+  }
+
+  void _submit() {
+    _formKey.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
+
+    RegistrasiBloc.registrasi(
+      nama: _namaTextboxController.text,
+      email: _emailTextboxController.text,
+      password: _passwordTextboxController.text,
+    ).then(
+      (value) {
+        if (value.code == 200 || value.status == true) { // Cek status sukses
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => SuccessDialog(
+              description: "Registrasi berhasil, silahkan login",
+              okClick: () {
+                Navigator.pop(context); // Tutup dialog
+                Navigator.pop(context); // Kembali ke halaman Login
+              },
+            ),
+          );
+        } else {
+            // Tangkap error dari API (misal email duplikat)
+            showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => WarningDialog(
+              description: value.data ?? "Registrasi gagal, silahkan coba lagi",
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) => const WarningDialog(
+            description: "Registrasi gagal, silahkan coba lagi",
+          ),
+        );
+      },
+    ).whenComplete(() {
+      // Matikan loading SETELAH proses selesai
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
   }
 }

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tokokita/model/produk.dart';
+import 'package:tokokita/bloc/produk_bloc.dart';
+import 'package:tokokita/ui/produk_page.dart';
+import 'package:tokokita/widget/warning_dialog.dart';
 
+// ignore: must_be_immutable
 class ProdukForm extends StatefulWidget {
   Produk? produk;
+
   ProdukForm({Key? key, this.produk}) : super(key: key);
 
   @override
@@ -12,6 +17,7 @@ class ProdukForm extends StatefulWidget {
 class _ProdukFormState extends State<ProdukForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  
   String judul = "TAMBAH PRODUK";
   String tombolSubmit = "SIMPAN";
 
@@ -19,10 +25,10 @@ class _ProdukFormState extends State<ProdukForm> {
   final _namaProdukTextboxController = TextEditingController();
   final _hargaProdukTextboxController = TextEditingController();
 
-  final Color _spotifyBlack = const Color(0xFF121212);
-  final Color _spotifyDarkGrey = const Color(0xFF282828);
+  // Warna Dark Mode (Spotify Style)
   final Color _spotifyGreen = const Color(0xFF1DB954);
-  final Color _spotifyTextGrey = const Color(0xFFB3B3B3);
+  final Color _darkBackground = const Color(0xFF121212);
+  final Color _inputFillColor = const Color(0xFF282828);
 
   @override
   void initState() {
@@ -30,75 +36,56 @@ class _ProdukFormState extends State<ProdukForm> {
     isUpdate();
   }
 
-  isUpdate() {
+  void isUpdate() {
     if (widget.produk != null) {
       setState(() {
-        judul = "Ubah Produk - Ime";
-        tombolSubmit = "Ubah";
-        _kodeProdukTextboxController.text = widget.produk!.kodeProduk!;
-        _namaProdukTextboxController.text = widget.produk!.namaProduk!;
-        _hargaProdukTextboxController.text =
-            widget.produk!.hargaProduk.toString();
+        judul = "UBAH PRODUK";
+        tombolSubmit = "UPDATE";
+        _kodeProdukTextboxController.text = widget.produk!.kodeProduk ?? '';
+        _namaProdukTextboxController.text = widget.produk!.namaProduk ?? '';
+        _hargaProdukTextboxController.text = widget.produk!.hargaProduk != null 
+            ? widget.produk!.hargaProduk.toString() 
+            : '';
       });
     } else {
-      judul = "Tambah Produk - Ime";
-      tombolSubmit = "Simpan";
+      judul = "TAMBAH PRODUK";
+      tombolSubmit = "SIMPAN";
     }
   }
 
-  InputDecoration _spotifyDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: TextStyle(color: _spotifyTextGrey),
-      filled: true,
-      fillColor: _spotifyDarkGrey, 
-      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _spotifyGreen, width: 2), 
-        borderRadius: BorderRadius.circular(8),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.redAccent),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.redAccent),
-        borderRadius: BorderRadius.circular(8),
-      ),
-    );
+  @override
+  void dispose() {
+    _kodeProdukTextboxController.dispose();
+    _namaProdukTextboxController.dispose();
+    _hargaProdukTextboxController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _spotifyBlack, 
+      backgroundColor: _darkBackground,
       appBar: AppBar(
-        backgroundColor: _spotifyBlack,
-        title: Text(
-          judul,
-          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(judul, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _kodeProdukTextField(),
-                const SizedBox(height: 16), 
+                const SizedBox(height: 16),
                 _namaProdukTextField(),
                 const SizedBox(height: 16),
                 _hargaProdukTextField(),
-                const SizedBox(height: 30),
-                _buttonSubmit()
+                const SizedBox(height: 40),
+                _buttonSubmit(),
               ],
             ),
           ),
@@ -107,51 +94,63 @@ class _ProdukFormState extends State<ProdukForm> {
     );
   }
 
-  // Membuat Textbox Kode Produk
+  InputDecoration _customInputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.grey),
+      filled: true,
+      fillColor: _inputFillColor,
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide(color: _spotifyGreen, width: 2.0)),
+    );
+  }
+
   Widget _kodeProdukTextField() {
     return TextFormField(
-      style: const TextStyle(color: Colors.white), 
-      decoration: _spotifyDecoration("Kode Produk"),
-      cursorColor: _spotifyGreen,
+      style: const TextStyle(color: Colors.white),
+      decoration: _customInputDecoration('Kode Produk'),
       keyboardType: TextInputType.text,
       controller: _kodeProdukTextboxController,
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Kode Produk harus diisi";
+        // PERBAIKAN PENTING: Cek null dulu biar gak error TypeError di Web
+        if (value == null || value.trim().isEmpty) {
+          return 'Kode Produk harus diisi';
         }
         return null;
       },
     );
   }
 
-  // Membuat Textbox Nama Produk
   Widget _namaProdukTextField() {
     return TextFormField(
       style: const TextStyle(color: Colors.white),
-      decoration: _spotifyDecoration("Nama Produk"),
-      cursorColor: _spotifyGreen,
+      decoration: _customInputDecoration('Nama Produk'),
       keyboardType: TextInputType.text,
       controller: _namaProdukTextboxController,
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Nama Produk harus diisi";
+        // PERBAIKAN PENTING
+        if (value == null || value.trim().isEmpty) {
+          return 'Nama Produk harus diisi';
         }
         return null;
       },
     );
   }
 
-  // Membuat Textbox Harga Produk
   Widget _hargaProdukTextField() {
     return TextFormField(
       style: const TextStyle(color: Colors.white),
-      decoration: _spotifyDecoration("Harga"),
-      cursorColor: _spotifyGreen,
+      decoration: _customInputDecoration('Harga (Rp)'),
       keyboardType: TextInputType.number,
       controller: _hargaProdukTextboxController,
       validator: (value) {
-        if (value!.isEmpty) {
-          return "Harga harus diisi";
+        // PERBAIKAN PENTING
+        if (value == null || value.trim().isEmpty) {
+          return 'Harga harus diisi';
+        }
+        if (int.tryParse(value) == null) {
+          return 'Harga harus berupa angka';
         }
         return null;
       },
@@ -160,47 +159,80 @@ class _ProdukFormState extends State<ProdukForm> {
 
   Widget _buttonSubmit() {
     return SizedBox(
-      width: double.infinity, 
+      height: 55,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: _spotifyGreen, 
-          foregroundColor: Colors.black, 
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: const StadiumBorder(), 
+          backgroundColor: _spotifyGreen,
+          shape: const StadiumBorder(),
+          elevation: 0,
         ),
-        child: _isLoading
-            ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(color: Colors.black),
-              )
-            : Text(
-                tombolSubmit,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
+        child: _isLoading 
+          ? const CircularProgressIndicator(color: Colors.white)
+          : Text(
+              tombolSubmit,
+              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+            ),
         onPressed: () {
           var validate = _formKey.currentState!.validate();
-          if (validate && !_isLoading) {
-            setState(() {
-              _isLoading = true;
-            });
-
-            Future.delayed(const Duration(seconds: 2), () {
-              if (!mounted) return; 
-              
-              Navigator.pop(context); 
-              
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("$judul Berhasil (Simulasi)"),
-                  backgroundColor: _spotifyGreen,
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            });
+          if (validate) {
+            if (!_isLoading) {
+              if (widget.produk != null) {
+                ubah();
+              } else {
+                simpan();
+              }
+            }
           }
         },
       ),
     );
+  }
+
+  void simpan() {
+    setState(() { _isLoading = true; });
+    
+    Produk createProduk = Produk(id: null);
+    createProduk.kodeProduk = _kodeProdukTextboxController.text;
+    createProduk.namaProduk = _namaProdukTextboxController.text;
+    createProduk.hargaProduk = int.parse(_hargaProdukTextboxController.text);
+    
+    ProdukBloc.addProduk(produk: createProduk).then((value) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => const ProdukPage()),
+          (Route<dynamic> route) => false,
+        );
+      }, onError: (error) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const WarningDialog(description: "Simpan gagal, silahkan coba lagi"),
+        );
+      },
+    ).whenComplete(() {
+      if (mounted) setState(() { _isLoading = false; });
+    });
+  }
+
+  void ubah() {
+    setState(() { _isLoading = true; });
+    
+    Produk updateProduk = Produk(id: widget.produk!.id!);
+    updateProduk.kodeProduk = _kodeProdukTextboxController.text;
+    updateProduk.namaProduk = _namaProdukTextboxController.text;
+    updateProduk.hargaProduk = int.parse(_hargaProdukTextboxController.text);
+    
+    ProdukBloc.updateProduk(produk: updateProduk).then((value) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => const ProdukPage()),
+           (Route<dynamic> route) => false,
+        );
+      }, onError: (error) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => const WarningDialog(description: "Permintaan ubah data gagal, silahkan coba lagi"),
+        );
+      },
+    ).whenComplete(() {
+      if (mounted) setState(() { _isLoading = false; });
+    });
   }
 }

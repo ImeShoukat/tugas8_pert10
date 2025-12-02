@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tokokita/bloc/login_bloc.dart';
+import 'package:tokokita/helpers/user_info.dart';
+import 'package:tokokita/ui/produk_page.dart';
 import 'package:tokokita/ui/registrasi_page.dart';
+import 'package:tokokita/widget/warning_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -10,47 +15,54 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+
   final _emailTextboxController = TextEditingController();
   final _passwordTextboxController = TextEditingController();
-
-  // Warna Khas Spotify
-  final Color _spotifyGreen = const Color(0xFF1DB954);
-  final Color _spotifyBlack = const Color(0xFF121212);
-  final Color _spotifyDarkGrey = const Color(0xFF282828);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _spotifyBlack, // Background Hitam
-      appBar: AppBar(
-        title: const Text(
-          'Login',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        backgroundColor: _spotifyBlack, // AppBar Hitam
-        elevation: 0, // Hilangkan bayangan
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                // Logo Icon (Opsional, biar makin mirip)
-                Icon(Icons.music_note, size: 80, color: _spotifyGreen),
-                const SizedBox(height: 40),
-                
-                _emailTextField(),
-                const SizedBox(height: 16),
-                _passwordTextField(),
-                const SizedBox(height: 40),
-                _buttonLogin(),
-                const SizedBox(height: 30),
-                _menuRegistrasi()
-              ],
+      // --- WARNA BACKGROUND (HITAM PEKAT) ---
+      backgroundColor: const Color(0xFF121212), 
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // --- JUDUL HALAMAN ---
+                  const Text(
+                    "Log in",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white, // Teks Putih
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -1.0,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  
+                  // --- INPUT EMAIL ---
+                  _emailTextField(),
+                  const SizedBox(height: 16),
+                  
+                  // --- INPUT PASSWORD ---
+                  _passwordTextField(),
+                  const SizedBox(height: 32),
+                  
+                  // --- TOMBOL LOGIN (HIJAU) ---
+                  _buttonLogin(),
+                  const SizedBox(height: 24),
+                  
+                  // --- LINK REGISTRASI ---
+                  _menuRegistrasi(),
+                ],
+              ),
             ),
           ),
         ),
@@ -58,39 +70,26 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Styles untuk Input Field agar rounded dan gelap
-  InputDecoration _spotifyInputDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: Colors.grey), // Label abu-abu
-      filled: true,
-      fillColor: _spotifyDarkGrey, // Background kolom input abu-abu gelap
-      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide.none, // Hilangkan garis border saat diam
-        borderRadius: BorderRadius.circular(30), // Rounded banget
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: _spotifyGreen, width: 2), // Garis hijau saat diklik
-        borderRadius: BorderRadius.circular(30),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.red),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.red),
-        borderRadius: BorderRadius.circular(30),
-      ),
-    );
-  }
-
-  // Membuat Textbox email
   Widget _emailTextField() {
     return TextFormField(
-      style: const TextStyle(color: Colors.white), // Teks input putih
-      decoration: _spotifyInputDecoration("Email"),
-      cursorColor: _spotifyGreen, // Kursor warna hijau
+      style: const TextStyle(color: Colors.white), // Ketikan teks warna putih
+      decoration: InputDecoration(
+        labelText: "Email",
+        labelStyle: const TextStyle(color: Colors.grey),
+        filled: true,
+        // Warna isian textbox (Abu Gelap)
+        fillColor: const Color(0xFF282828), 
+        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        // Border saat diklik (Hijau)
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0),
+        ),
+      ),
       keyboardType: TextInputType.emailAddress,
       controller: _emailTextboxController,
       validator: (value) {
@@ -102,12 +101,26 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Membuat Textbox password
   Widget _passwordTextField() {
     return TextFormField(
-      style: const TextStyle(color: Colors.white),
-      decoration: _spotifyInputDecoration("Password"),
-      cursorColor: _spotifyGreen,
+      style: const TextStyle(color: Colors.white), // Ketikan teks warna putih
+      decoration: InputDecoration(
+        labelText: "Password",
+        labelStyle: const TextStyle(color: Colors.grey),
+        filled: true,
+        // Warna isian textbox (Abu Gelap)
+        fillColor: const Color(0xFF282828), 
+        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        // Border saat diklik (Hijau)
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: const BorderSide(color: Color(0xFF1DB954), width: 2.0),
+        ),
+      ),
       keyboardType: TextInputType.text,
       obscureText: true,
       controller: _passwordTextboxController,
@@ -120,59 +133,114 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Membuat Tombol Login
   Widget _buttonLogin() {
     return SizedBox(
-      width: double.infinity, 
+      height: 55,
       child: ElevatedButton(
-        child: const Text(
-          "Login - Ime",
-          style: TextStyle(
-            color: Colors.black, 
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-          ),
-        ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: _spotifyGreen, 
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          shape: const StadiumBorder(), 
+          // --- WARNA TOMBOL (HIJAU SPOTIFY) ---
+          backgroundColor: const Color(0xFF1DB954), 
+          // Jika Flutter versi lama error di 'backgroundColor', ganti jadi 'primary'
+          
+          shape: const StadiumBorder(),
+          elevation: 0,
         ),
+        child: _isLoading 
+          ? const CircularProgressIndicator(color: Colors.white)
+          : const Text(
+              "LOG IN",
+              style: TextStyle(
+                color: Colors.black, // Teks Hitam
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                letterSpacing: 1.5,
+              ),
+            ),
         onPressed: () {
           var validate = _formKey.currentState!.validate();
           if (validate) {
+            if (!_isLoading) _submit();
           }
         },
       ),
     );
   }
 
+  void _submit() {
+    _formKey.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
+
+    LoginBloc.login(
+      email: _emailTextboxController.text,
+      password: _passwordTextboxController.text,
+    ).then((value) async {
+        if (value.code == 200) {
+          await UserInfo().setToken(value.token.toString());
+          if (value.userId != null) {
+            await UserInfo().setUserID(int.parse(value.userId.toString()));
+          }
+
+          if (!mounted) return;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ProdukPage()),
+          );
+        } else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) => const WarningDialog(
+              description: "Login gagal, silahkan coba lagi",
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        print(error);
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) => const WarningDialog(
+            description: "Login gagal, silahkan coba lagi",
+          ),
+        );
+      },
+    ).whenComplete(() {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
   Widget _menuRegistrasi() {
     return Center(
-      child: Column(
-        children: [
-          const Text(
-            "Don't have an account?",
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RegistrasiPage()),
+          );
+        },
+        child: RichText(
+          text: const TextSpan(
+            text: "Don't have an account? ",
             style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 5),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const RegistrasiPage()));
-            },
-            child: Text(
-              "SIGN UP FOR TOKOKITA",
-              style: TextStyle(
-                color: Colors.white, 
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.0,
+            children: [
+              TextSpan(
+                text: "Sign up",
+                style: TextStyle(
+                  color: Colors.white, // Teks Link Putih
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

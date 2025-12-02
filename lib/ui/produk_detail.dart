@@ -1,164 +1,160 @@
 import 'package:flutter/material.dart';
+import 'package:tokokita/bloc/produk_bloc.dart';
 import 'package:tokokita/model/produk.dart';
 import 'package:tokokita/ui/produk_form.dart';
+import 'package:tokokita/ui/produk_page.dart';
+import 'package:tokokita/widget/warning_dialog.dart';
 
+// ignore: must_be_immutable
 class ProdukDetail extends StatefulWidget {
-  final Produk? produk; 
+  Produk? produk;
 
-  const ProdukDetail({Key? key, this.produk}) : super(key: key);
+  ProdukDetail({Key? key, this.produk}) : super(key: key);
 
   @override
   _ProdukDetailState createState() => _ProdukDetailState();
 }
 
 class _ProdukDetailState extends State<ProdukDetail> {
-  // Palette Warna Spotify
-  final Color _spotifyBlack = const Color(0xFF121212);
-  final Color _spotifyDarkGrey = const Color(0xFF282828);
+  // Warna Tema
   final Color _spotifyGreen = const Color(0xFF1DB954);
-  final Color _spotifyTextGrey = const Color(0xFFB3B3B3);
+  final Color _darkBackground = const Color(0xFF121212);
+  final Color _cardColor = const Color(0xFF282828);
 
   @override
   Widget build(BuildContext context) {
-    if (widget.produk == null) {
-      return Scaffold(
-        backgroundColor: _spotifyBlack,
-        appBar: AppBar(backgroundColor: _spotifyBlack),
-        body: const Center(child: Text("Data tidak ditemukan", style: TextStyle(color: Colors.white))),
-      );
-    }
-
     return Scaffold(
-      backgroundColor: _spotifyBlack, 
+      backgroundColor: _darkBackground,
       appBar: AppBar(
-        title: const Text("Detail Produk - Ime", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-        backgroundColor: _spotifyBlack,
-        iconTheme: const IconThemeData(color: Colors.white), 
+        title: const Text("Detail Produk", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center, 
-            children: [
-              _buildCoverArt(), 
-              const SizedBox(height: 30),
-              _buildProductInfo(), 
-              const SizedBox(height: 40),
-              _tombolHapusEdit() 
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // --- 1. ICON PRODUK (Ala Cover Album) ---
+                _produkIcon(),
+                const SizedBox(height: 32),
 
-  Widget _buildCoverArt() {
-    return Container(
-      height: 250,
-      width: 250,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [_spotifyDarkGrey, Colors.black],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-        borderRadius: BorderRadius.circular(12), 
-      ),
-      child: Icon(
-        Icons.inventory_2_outlined, // Ikon Produk
-        size: 100,
-        color: _spotifyTextGrey.withOpacity(0.5),
-      ),
-    );
-  }
+                // --- 2. INFORMASI PRODUK ---
+                Text(
+                  widget.produk!.namaProduk ?? "Nama Produk",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "Kode: ${widget.produk!.kodeProduk}",
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  "Rp ${widget.produk!.hargaProduk.toString()}", // Pastikan di Model namanya hargaProduk atau harga
+                  style: TextStyle(
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.bold,
+                    color: _spotifyGreen, // Warna Hijau Nyala
+                  ),
+                ),
 
-  Widget _buildProductInfo() {
-    return Column(
-      children: [
-        Text(
-          widget.produk!.namaProduk!,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 28.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          "Rp. ${widget.produk!.hargaProduk.toString()}",
-          style: TextStyle(
-            fontSize: 20.0,
-            color: _spotifyGreen,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: _spotifyDarkGrey,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            "CODE: ${widget.produk!.kodeProduk}",
-            style: TextStyle(
-              fontSize: 12.0,
-              color: _spotifyTextGrey,
-              letterSpacing: 1.5,
+                const SizedBox(height: 50),
+
+                // --- 3. TOMBOL AKSI ---
+                _tombolHapusEdit(),
+              ],
             ),
           ),
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _produkIcon() {
+    return Container(
+      height: 180,
+      width: 180,
+      decoration: BoxDecoration(
+        color: _cardColor, // Kotak abu gelap
+        borderRadius: BorderRadius.circular(20), // Sudut tumpul
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Icon(
+        Icons.inventory_2_outlined, // Ikon barang
+        size: 80,
+        color: _spotifyGreen,
+      ),
     );
   }
 
   Widget _tombolHapusEdit() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        Expanded(
+        // Tombol Edit (Hijau Lebar)
+        SizedBox(
+          width: double.infinity,
+          height: 55,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: _spotifyGreen,
-              foregroundColor: Colors.black, 
-              padding: const EdgeInsets.symmetric(vertical: 16),
               shape: const StadiumBorder(),
             ),
-            child: const Text("Edit", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text(
+              "EDIT PRODUK",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProdukForm(
-                    produk: widget.produk!,
-                  ),
+                  builder: (context) => ProdukForm(produk: widget.produk!),
                 ),
               );
             },
           ),
         ),
-        const SizedBox(width: 16),
-
-        Expanded(
+        const SizedBox(height: 16),
+        
+        // Tombol Hapus (Merah/Outline Lebar)
+        SizedBox(
+          width: double.infinity,
+          height: 55,
           child: OutlinedButton(
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.redAccent, 
-              side: const BorderSide(color: Colors.redAccent), 
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              side: const BorderSide(color: Colors.redAccent, width: 2),
               shape: const StadiumBorder(),
             ),
-            child: const Text("Hapus", style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text(
+              "DELETE PRODUK",
+              style: TextStyle(
+                color: Colors.redAccent,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
             onPressed: () => confirmHapus(),
           ),
         ),
@@ -167,39 +163,60 @@ class _ProdukDetailState extends State<ProdukDetail> {
   }
 
   void confirmHapus() {
-    AlertDialog alertDialog = AlertDialog(
-      backgroundColor: _spotifyDarkGrey, 
-      title: const Text("Hapus Produk?", style: TextStyle(color: Colors.white)),
-      content: Text(
-        "Yakin ingin menghapus '${widget.produk!.namaProduk}'? Tindakan ini tidak dapat dibatalkan.",
-        style: TextStyle(color: _spotifyTextGrey),
-      ),
-      actions: [
-        
-        TextButton(
-          child: const Text("Batal", style: TextStyle(color: Colors.white)),
-          onPressed: () => Navigator.pop(context),
+    // Dialog kustom biar gelap (Dark Mode)
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: _cardColor, // Background Dialog Abu Gelap
+        title: const Text("Hapus Produk", style: TextStyle(color: Colors.white)),
+        content: const Text(
+          "Yakin ingin menghapus data ini? Tindakan ini tidak bisa dibatalkan.",
+          style: TextStyle(color: Colors.white70),
         ),
-        
-        TextButton(
-          child: const Text("Hapus", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
-          onPressed: () {
-            Navigator.pop(context); 
-            
-            ScaffoldMessenger.of(context).showSnackBar(
-               SnackBar(
-                content: const Text("Data berhasil dihapus (Simulasi)"),
-                backgroundColor: _spotifyGreen,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
-            
-            Navigator.pop(context); 
-          },
-        ),
-      ],
-    );
+        actions: [
+          TextButton(
+            child: const Text("Batal", style: TextStyle(color: Colors.grey)),
+            onPressed: () => Navigator.pop(context),
+          ),
+          TextButton(
+            child: const Text("Hapus", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+            onPressed: () {
+              // Tutup dialog dulu
+              Navigator.pop(context); 
+              
+              // Proses Hapus
+              // Pastikan ID dikonversi ke int dengan aman
+              int? idHapus;
+              if (widget.produk!.id != null) {
+                 idHapus = int.tryParse(widget.produk!.id.toString());
+              }
 
-    showDialog(builder: (context) => alertDialog, context: context);
+              if (idHapus == null) {
+                  print("Error: ID Produk null atau tidak valid");
+                  return;
+              }
+
+              ProdukBloc.deleteProduk(id: idHapus).then((value) {
+                  if (!mounted) return;
+                  
+                  // Kembali ke halaman list (ProdukPage) dan refresh
+                  // Menggunakan pushReplacement agar halaman detail hilang dari stack
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const ProdukPage()),
+                  );
+                },
+              ).catchError((error) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => const WarningDialog(
+                    description: "Hapus gagal, silahkan coba lagi",
+                  ),
+                );
+              });
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
